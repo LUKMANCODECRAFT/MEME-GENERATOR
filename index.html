@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MemeStudio Pro - Clean, powerful, and interactive meme generator.">
+    <title>MemeStudio Pro | Ultimate Meme Creator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-wrapper">
+        <!-- Top Navbar -->
+        <header class="top-navbar">
+            <!-- Left: Brand Logo & Title -->
+            <div class="nav-brand">
+                <div class="brand-badge-icon">⚡</div>
+                <div class="brand-name">MemeStudio <span class="badge-pro">PRO</span></div>
+            </div>
+
+            <!-- Center: Studio Quick Actions Toolbar -->
+            <div class="nav-toolbar">
+                <div class="btn-group">
+                    <button class="nav-icon-btn" id="undoBtn" title="Undo (Ctrl+Z)" disabled>
+                        <svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
+                    </button>
+                    <button class="nav-icon-btn" id="redoBtn" title="Redo (Ctrl+Y)" disabled>
+                        <svg viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5v0A5.5 5.5 0 0 0 9.5 20H13"/></svg>
+                    </button>
+                </div>
+
+                <div class="nav-divider"></div>
+
+                <!-- Aspect Ratio Selector -->
+                <div class="ratio-select-box">
+                    <svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+                    <select id="aspectRatioSelect" title="Canvas Aspect Ratio">
+                        <option value="original">Original Aspect</option>
+                        <option value="1:1">1:1 Square (Instagram)</option>
+                        <option value="9:16">9:16 Story / TikTok</option>
+                        <option value="16:9">16:9 Landscape / Twitter</option>
+                        <option value="4:5">4:5 Portrait</option>
+                    </select>
+                </div>
+
+                <div class="nav-divider"></div>
+
+                <div class="btn-group">
+                    <button class="nav-icon-btn" id="randomMemeBtn" title="Load Random Template">
+                        <svg viewBox="0 0 24 24"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>
+                    </button>
+                    <button class="nav-icon-btn danger" id="clearAllBtn" title="Reset All">
+                        <svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right: Export & Copy Actions -->
+            <div class="nav-actions">
+                <button class="btn btn-secondary" id="quickCopyBtn" title="Copy Meme directly to Clipboard (Ctrl+C)">
+                    <svg viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                    <span>Copy Meme</span>
+                </button>
+                <button class="btn btn-primary" id="openExportModalBtn">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Export HD</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Studio Body Layout -->
+        <main class="studio-body">
+            <!-- Left Tool Tabs Bar -->
+            <nav class="tool-tabs-bar" aria-label="Tool Navigation">
+                <button class="tab-btn active" data-tab="templates" title="Templates">
+                    <svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                    <span>Templates</span>
+                </button>
+                <button class="tab-btn" data-tab="text" title="Typography & Captions">
+                    <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                    <span>Text</span>
+                </button>
+                <button class="tab-btn" data-tab="stickers" title="Stickers & Emojis">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                    <span>Stickers</span>
+                </button>
+                <button class="tab-btn" data-tab="filters" title="Photo Filters">
+                    <svg viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+                    <span>Filters</span>
+                </button>
+                <button class="tab-btn" data-tab="draw" title="Draw & Shapes">
+                    <svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>
+                    <span>Draw</span>
+                </button>
+                <button class="tab-btn" data-tab="layers" title="Layers">
+                    <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    <span>Layers</span>
+                </button>
+            </nav>
+
+            <!-- Sidebar Tool Panel -->
+            <aside class="sidebar-panel" id="sidebarPanel">
+                <!-- TAB 1: TEMPLATES & IMAGE -->
+                <div class="tool-tab-content active" id="tab-templates">
+                    <div class="panel-section-header">
+                        <div class="panel-section-title">
+                            <svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                            <span>Templates & Upload</span>
+                        </div>
+                    </div>
+
+                    <!-- Custom Dropzone -->
+                    <div class="dropzone" id="dropzoneUpload">
+                        <div class="dropzone-icon">
+                            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        </div>
+                        <div class="dropzone-label">Click or Drop Image Here</div>
+                        <div class="dropzone-hint">PNG, JPG, WebP, GIF, or Ctrl+V</div>
+                        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="search-input-wrapper">
+                        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                        <input type="text" class="studio-input" id="templateSearchInput" placeholder="Search templates (Drake, Cat, Doge...)">
+                    </div>
+
+                    <!-- Template Grid Header -->
+                    <div class="section-label-row">
+                        <span class="label-text">Popular Meme Formats</span>
+                        <span class="badge-count" id="templateCountBadge">12 templates</span>
+                    </div>
+
+                    <!-- Templates Grid -->
+                    <div class="template-grid" id="templateGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- TAB 2: TEXT & TYPOGRAPHY -->
+                <div class="tool-tab-content" id="tab-text">
+                    <div class="panel-section-header">
+                        <div class="panel-section-title">
+                            <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                            <span>Typography & Text</span>
+                        </div>
+                        <button class="btn btn-sm btn-cyan" id="addTextLayerBtn">+ Add Text</button>
+                    </div>
+
+                    <!-- Quick Preset Layouts -->
+                    <div class="control-box">
+                        <div class="control-label">Quick Layouts</div>
+                        <div class="btn-grid-2">
+                            <button class="btn btn-secondary btn-sm" id="quickTopBottomBtn">Top & Bottom</button>
+                            <button class="btn btn-secondary btn-sm" id="quickHeaderBoxBtn">News Banner</button>
+                        </div>
+                    </div>
+
+                    <!-- Active Caption Input -->
+                    <div class="control-box">
+                        <div class="control-label">Selected Text Caption</div>
+                        <textarea class="studio-textarea" id="activeTextInput" placeholder="Enter text caption..."></textarea>
+                    </div>
+
+                    <!-- Font Family Grid -->
+                    <div class="control-box">
+                        <div class="control-label">Font Family</div>
+                        <div class="font-btn-grid" id="fontFamilyGroup">
+                            <button class="font-btn active" data-font="Impact" style="font-family: Impact;">Impact</button>
+                            <button class="font-btn" data-font="Anton" style="font-family: 'Anton';">Anton</button>
+                            <button class="font-btn" data-font="Montserrat" style="font-family: 'Montserrat'; font-weight:900;">Montserrat</button>
+                            <button class="font-btn" data-font="Bebas Neue" style="font-family: 'Bebas Neue';">Bebas</button>
+                            <button class="font-btn" data-font="Permanent Marker" style="font-family: 'Permanent Marker';">Marker</button>
+                            <button class="font-btn" data-font="Inter" style="font-family: 'Inter'; font-weight:800;">Inter</button>
+                        </div>
+                    </div>
+
+                    <!-- Font Size Slider -->
+                    <div class="control-box">
+                        <div class="slider-label-row">
+                            <span>Font Size</span>
+                            <span class="value-tag" id="fontSizeVal">48px</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="fontSizeSlider" min="16" max="140" value="48">
+                    </div>
+
+                    <!-- Text Colors & Stroke -->
+                    <div class="control-box">
+                        <div class="two-col-grid">
+                            <div>
+                                <div class="control-label">Text Fill</div>
+                                <div class="color-picker-deck">
+                                    <input type="color" class="color-input" id="textColorPicker" value="#ffffff">
+                                    <div class="color-dot" style="background:#ffffff;" data-color="#ffffff"></div>
+                                    <div class="color-dot" style="background:#fde047;" data-color="#fde047"></div>
+                                    <div class="color-dot" style="background:#ef4444;" data-color="#ef4444"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="control-label">Outline</div>
+                                <div class="color-picker-deck">
+                                    <input type="color" class="color-input" id="strokeColorPicker" value="#000000">
+                                    <div class="color-dot" style="background:#000000;" data-stroke="#000000"></div>
+                                    <div class="color-dot" style="background:#1e293b;" data-stroke="#1e293b"></div>
+                                    <div class="color-dot" style="background:#ffffff;" data-stroke="#ffffff"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stroke Width Slider -->
+                    <div class="control-box">
+                        <div class="slider-label-row">
+                            <span>Outline Thickness</span>
+                            <span class="value-tag" id="strokeWidthVal">5px</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="strokeWidthSlider" min="0" max="25" value="5">
+                    </div>
+
+                    <!-- Alignment & Formatting Toolbar -->
+                    <div class="control-box">
+                        <div class="control-label">Alignment & Styling</div>
+                        <div class="segmented-deck">
+                            <button class="seg-btn" id="alignLeftBtn" title="Align Left">
+                                <svg viewBox="0 0 24 24"><line x1="21" y1="6" x2="3" y2="6"/><line x1="15" y1="12" x2="3" y2="12"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
+                            </button>
+                            <button class="seg-btn active" id="alignCenterBtn" title="Align Center">
+                                <svg viewBox="0 0 24 24"><line x1="21" y1="6" x2="3" y2="6"/><line x1="18" y1="12" x2="6" y2="12"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+                            </button>
+                            <button class="seg-btn" id="alignRightBtn" title="Align Right">
+                                <svg viewBox="0 0 24 24"><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="12" x2="9" y2="12"/><line x1="21" y1="18" x2="7" y2="18"/></svg>
+                            </button>
+                            <button class="seg-btn active" id="allCapsBtn" title="Toggle ALL-CAPS">AA</button>
+                            <button class="seg-btn" id="shadowToggleBtn" title="Toggle Drop Shadow">
+                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 2v20"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Background Pill / Banner -->
+                    <div class="control-box">
+                        <div class="toggle-row">
+                            <span class="control-label" style="margin:0;">Background Banner Box</span>
+                            <input type="checkbox" id="textBgToggle">
+                        </div>
+                        <div class="banner-color-options" id="textBgColorRow" style="display:none; margin-top:8px;">
+                            <input type="color" class="color-input" id="textBgColorPicker" value="#ef4444">
+                            <input type="range" class="studio-slider" id="textBgOpacitySlider" min="0.1" max="1" step="0.05" value="0.85" title="Opacity">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: STICKERS & EMOJIS -->
+                <div class="tool-tab-content" id="tab-stickers">
+                    <div class="panel-section-header">
+                        <div class="panel-section-title">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                            <span>Stickers & Emojis</span>
+                        </div>
+                        <button class="btn btn-sm btn-secondary" id="uploadCustomStickerBtn">+ Custom</button>
+                        <input type="file" id="stickerFileInput" accept="image/*" style="display:none;">
+                    </div>
+
+                    <!-- Category Pills -->
+                    <div class="category-pills-bar" id="stickerCategoryTabs">
+                        <button class="cat-pill active" data-cat="memes">🔥 Memes</button>
+                        <button class="cat-pill" data-cat="faces">😂 Faces</button>
+                        <button class="cat-pill" data-cat="reactions">💥 Reactions</button>
+                        <button class="cat-pill" data-cat="props">🕶️ Props</button>
+                        <button class="cat-pill" data-cat="badges">🎯 Badges</button>
+                    </div>
+
+                    <!-- Sticker Matrix -->
+                    <div class="sticker-matrix-grid" id="stickerMatrix">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+
+                    <!-- Quick Meme Markers -->
+                    <div class="control-box" style="margin-top:10px;">
+                        <div class="control-label">Meme Props & Markers</div>
+                        <div class="btn-grid-2">
+                            <button class="btn btn-secondary btn-sm" id="addRedArrowBtn">🔴 Red Arrow</button>
+                            <button class="btn btn-secondary btn-sm" id="addRedCircleBtn">⭕ Red Circle</button>
+                            <button class="btn btn-secondary btn-sm" id="addSpeechBubbleBtn">💬 Speech Bubble</button>
+                            <button class="btn btn-secondary btn-sm" id="addThugGlassesBtn">🕶️ Thug Glasses</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: FILTERS & ADJUSTMENTS -->
+                <div class="tool-tab-content" id="tab-filters">
+                    <div class="panel-section-header">
+                        <div class="panel-section-title">
+                            <svg viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+                            <span>Filters & Adjustments</span>
+                        </div>
+                        <button class="btn btn-sm btn-ghost" id="resetFiltersBtn">Reset</button>
+                    </div>
+
+                    <!-- Presets Grid -->
+                    <div class="control-box">
+                        <div class="control-label">Color Presets</div>
+                        <div class="filter-preset-grid">
+                            <button class="filter-preset-btn active" data-preset="normal">Normal</button>
+                            <button class="filter-preset-btn" data-preset="deepfried">Deep Fried 🔥</button>
+                            <button class="filter-preset-btn" data-preset="vintage">Vintage 📻</button>
+                            <button class="filter-preset-btn" data-preset="cyberpunk">Cyberpunk 👾</button>
+                            <button class="filter-preset-btn" data-preset="grayscale">Noir B&W 🖤</button>
+                            <button class="filter-preset-btn" data-preset="warm">Warm Glow ☀️</button>
+                        </div>
+                    </div>
+
+                    <!-- Transform Buttons -->
+                    <div class="control-box">
+                        <div class="control-label">Orientation</div>
+                        <div class="btn-grid-3">
+                            <button class="btn btn-secondary btn-sm" id="flipHBtn">Flip H ↔</button>
+                            <button class="btn btn-secondary btn-sm" id="flipVBtn">Flip V ↕</button>
+                            <button class="btn btn-secondary btn-sm" id="rotate90Btn">Rotate 90°</button>
+                        </div>
+                    </div>
+
+                    <!-- Sliders Deck -->
+                    <div class="control-box">
+                        <div class="slider-group">
+                            <div class="slider-label-row"><span>Brightness</span><span class="value-tag" id="valBrightness">100%</span></div>
+                            <input type="range" class="studio-slider" id="filterBrightness" min="0" max="200" value="100">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label-row"><span>Contrast</span><span class="value-tag" id="valContrast">100%</span></div>
+                            <input type="range" class="studio-slider" id="filterContrast" min="0" max="250" value="100">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label-row"><span>Saturation</span><span class="value-tag" id="valSaturation">100%</span></div>
+                            <input type="range" class="studio-slider" id="filterSaturation" min="0" max="300" value="100">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label-row"><span>Sepia / Warmth</span><span class="value-tag" id="valSepia">0%</span></div>
+                            <input type="range" class="studio-slider" id="filterSepia" min="0" max="100" value="0">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label-row"><span>Blur</span><span class="value-tag" id="valBlur">0px</span></div>
+                            <input type="range" class="studio-slider" id="filterBlur" min="0" max="15" value="0">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label-row"><span>Invert</span><span class="value-tag" id="valInvert">0%</span></div>
+                            <input type="range" class="studio-slider" id="filterInvert" min="0" max="100" value="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 5: DRAW & SHAPES -->
+                <div class="tool-tab-content" id="tab-draw">
+                    <div class="panel-section-header">
+                        <div class="panel-section-title">
+                            <svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>
+                            <span>Draw & Shapes</span>
+                        </div>
+                        <button class="btn btn-sm btn-danger" id="clearDrawingBtn">Clear</button>
+                    </div>
+
+                    <!-- Mode Segmented -->
+                    <div class="control-box">
+                        <div class="control-label">Drawing Mode</div>
+                        <div class="segmented-deck" id="drawModeSegmented">
+                            <button class="seg-btn active" data-mode="select">Select ↖</button>
+                            <button class="seg-btn" data-mode="brush">Brush 🖌️</button>
+                            <button class="seg-btn" data-mode="laser">Laser Eyes 🔴</button>
+                        </div>
+                    </div>
+
+                    <!-- Brush Settings -->
+                    <div class="control-box">
+                        <div class="control-label">Brush Color</div>
+                        <div class="color-picker-deck">
+                            <input type="color" class="color-input" id="brushColorPicker" value="#ef4444">
+                            <div class="color-dot" style="background:#ef4444;" data-brush="#ef4444"></div>
+                            <div class="color-dot" style="background:#fde047;" data-brush="#fde047"></div>
+                            <div class="color-dot" style="background:#06b6d4;" data-brush="#06b6d4"></div>
+                            <div class="color-dot" style="background:#ffffff;" data-brush="#ffffff"></div>
+                        </div>
+
+                        <div class="slider-group" style="margin-top:12px;">
+                            <div class="slider-label-row"><span>Brush Size</span><span class="value-tag" id="brushSizeVal">10px</span></div>
+                            <input type="range" class="studio-slider" id="brushSizeSlider" min="2" max="50" value="10">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 6: LAYERS -->
+                <div class="tool-tab-content" id="tab-layers">
+                    <div class="panel-section-header">
+                        <div class="panel-section-title">
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                            <span>Layer Manager</span>
+                        </div>
+                    </div>
+
+                    <div class="layers-deck" id="layersList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Center Stage Canvas Workspace -->
+            <section class="canvas-workspace" id="canvasViewport">
+                <!-- Canvas Stage Box -->
+                <div class="canvas-stage-wrapper" id="canvasStageWrapper">
+                    <canvas id="memeCanvas" width="800" height="800"></canvas>
+                </div>
+
+                <!-- Empty State Overlay -->
+                <div class="canvas-placeholder-overlay" id="placeholderOverlay">
+                    <div class="placeholder-icon">
+                        <svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                    </div>
+                    <h2 class="placeholder-title">Create Your Masterpiece</h2>
+                    <p class="placeholder-subtitle">Select a popular template, drop an image, or press Ctrl+V to paste from your clipboard.</p>
+                    <div class="placeholder-btn-group">
+                        <button class="btn btn-primary" id="placeholderUploadBtn">Upload Custom Image</button>
+                        <button class="btn btn-cyan" id="placeholderStarterMemeBtn">Load Classic Drake Meme</button>
+                    </div>
+                </div>
+
+                <!-- Bottom Floating Controls Toolbar -->
+                <div class="canvas-floating-toolbar">
+                    <button class="nav-icon-btn" id="zoomOutBtn" title="Zoom Out">
+                        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    </button>
+                    <span class="zoom-indicator-text" id="zoomLevelText">100%</span>
+                    <button class="nav-icon-btn" id="zoomInBtn" title="Zoom In">
+                        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    </button>
+                    <button class="nav-icon-btn" id="zoomFitBtn" title="Fit Canvas to Screen">
+                        <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+                    </button>
+                    <div class="nav-divider"></div>
+                    <button class="nav-icon-btn" id="duplicateLayerBtn" title="Duplicate Layer (Ctrl+D)">
+                        <svg viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                    </button>
+                    <button class="nav-icon-btn danger" id="deleteSelectedBtn" title="Delete Selected Layer (Del)">
+                        <svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/></svg>
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Export Modal Dialog -->
+    <div class="modal-backdrop" id="exportModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Export & Download Meme</span>
+                </div>
+                <button class="nav-icon-btn" id="closeExportModalBtn">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="control-box">
+                    <div class="control-label">File Format</div>
+                    <div class="segmented-deck" id="exportFormatSegmented">
+                        <button class="seg-btn active" data-format="png">PNG (Lossless)</button>
+                        <button class="seg-btn" data-format="jpeg">JPEG (Fast)</button>
+                        <button class="seg-btn" data-format="webp">WebP (Modern)</button>
+                    </div>
+                </div>
+
+                <div class="control-box">
+                    <div class="control-label">Resolution Scaling</div>
+                    <div class="segmented-deck" id="exportScaleSegmented">
+                        <button class="seg-btn" data-scale="1">1x Standard</button>
+                        <button class="seg-btn active" data-scale="2">2x HD</button>
+                        <button class="seg-btn" data-scale="4">4x Ultra</button>
+                    </div>
+                </div>
+
+                <div class="control-box">
+                    <div class="control-label">File Name</div>
+                    <input type="text" class="studio-input" id="exportFilenameInput" value="MemeStudio-Masterpiece">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modalCopyBtn">
+                    <svg viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                    <span>Copy Image</span>
+                </button>
+                <button class="btn btn-primary" id="modalDownloadBtn">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Download Meme</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
